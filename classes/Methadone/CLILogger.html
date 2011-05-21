@@ -1,0 +1,164 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+  <head>
+    <title>Methadone::CLILogger</title>
+    <meta content='text/html; charset=ASCII-8BIT' http-equiv='Content-Type'>
+    <link href='../../css/style.css' media='screen' rel='stylesheet' type='text/css'>
+    <script type='text/javascript'>
+      //<![CDATA[
+        function popupCode(url) {
+          window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+        }
+        
+        function toggleCode(id) {
+          var code = document.getElementById(id)
+        
+          code.style.display = code.style.display != 'block' ? 'block' : 'none'
+          return true
+        }
+        
+        // Make codeblocks hidden by default
+        document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+      //]]>
+    </script>
+  </head>
+  <body class='page'>
+    <div class='class' id='wrapper'>
+      <div class='header'>
+        <h1 class='name'>
+          <span class='type'>class</span>
+          Methadone::CLILogger
+        </h1>
+        <ol class='paths'>
+          <li>
+            <a target="docwin" href="../../files/lib/methadone/cli_logger_rb.html">lib/methadone/cli_logger.rb</a>
+          </li>
+        </ol>
+        <div class='parent'>
+          Parent:
+          <strong><a target="docwin" href="../Methadone.html">Methadone</a></strong>
+        </div>
+      </div>
+      <div id='content'>
+        <div id='text'>
+          <div id='description'>
+            
+            <p>A Logger appropriate for a command-line program in that it logs all
+            messages (based on level) to the standard output and logs "error" type
+            messages additionally to the standard error.  By default, this will pretty
+            much do what you want, however it can be customized:</p>
+            <ul><li>
+            <p>You can override the devices used by passing different devices to the
+            constructor</p>
+            </li><li>
+            <p>You can adjust the level of message that goes to the error logger via
+            error_level=</p>
+            </li><li>
+            <p>You can adjust the format for messages to the error logger separately via
+            error_formatter=</p>
+            </li></ul>
+            
+            <h3>Example</h3>
+            
+            <pre>logger = CLILogger.new&#x000A;logger.debug(&quot;Starting up&quot;) # =&gt; only the standard output gets this&#x000A;logger.error(&quot;Something went wrong!&quot;) # =&gt; both standard error AND standard output get this</pre>
+          </div>
+          <div id='method-list'>
+            <h2>Methods</h2>
+            <h3>Public Class</h3>
+            <ol>
+              <li><a target="docwin" href="#method-c-new">new</a></li>
+            </ol>
+            <h3>Public Instance</h3>
+            <ol>
+              <li><a target="docwin" href="#method-i-error_formatter-3D">error_formatter=</a></li>
+              <li><a target="docwin" href="#method-i-error_level-3D">error_level=</a></li>
+            </ol>
+          </div>
+          <div id='context'>
+          </div>
+          <div id='section'>
+            <div id='methods'>
+              <h2>Public Class methods</h2>
+              <div class='method public-class' id='method-method-c-new'>
+                <a name='method-c-new'></a>
+                <div class='synopsis'>
+                  <span class='name'>new</span>
+                  <span class='arguments'>(log_device=$stdout,error_device=$stderr)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>A logger that logs error-type messages to a second device; useful for
+                  ensuring that error messages go to standard error</p>
+                  <table class="rdoc-list"><tr><td class="rdoc-term"><p><tt>log_device</tt></p></td>
+                  <td>
+                  <p>device where all log messages should go, based on level</p>
+                  </td></tr><tr><td class="rdoc-term"><p><tt>error_device</tt></p></td>
+                  <td>
+                  <p>device where all error messages should go.  By default, this is
+                  Logger::Severity::WARN</p>
+                  </td></tr></table>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-c-new-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-c-new-source'><span class="ruby-comment"># File lib/methadone/cli_logger.rb, line 41</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">initialize</span>(<span class="ruby-identifier">log_device</span>=<span class="ruby-identifier">$stdout</span>,<span class="ruby-identifier">error_device</span>=<span class="ruby-identifier">$stderr</span>)&#x000A;  <span class="ruby-keyword">super</span>(<span class="ruby-identifier">log_device</span>)&#x000A;  <span class="ruby-ivar">@stderr_logger</span> = <span class="ruby-constant">Logger</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">error_device</span>)&#x000A;  <span class="ruby-ivar">@stderr_logger</span>.<span class="ruby-identifier">level</span> = <span class="ruby-constant">Logger</span><span class="ruby-operator">::</span><span class="ruby-constant">Severity</span><span class="ruby-operator">::</span><span class="ruby-constant">WARN</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <h2>Public Instance methods</h2>
+              <div class='method public-instance' id='method-method-i-error_formatter-3D'>
+                <a name='method-i-error_formatter-3D'></a>
+                <div class='synopsis'>
+                  <span class='name'>error_formatter=</span>
+                  <span class='arguments'>(formatter)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Overrides the formatter for the error logger.  A future call to #formatter=
+                  will affect both, so the order of the calls matters.</p>
+                  <table class="rdoc-list"><tr><td class="rdoc-term"><p><tt>formatter</tt></p></td>
+                  <td>
+                  <p>Proc that handles the formatting, the same as for #formatter=</p>
+                  </td></tr></table>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-error_formatter-3D-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-error_formatter-3D-source'><span class="ruby-comment"># File lib/methadone/cli_logger.rb, line 60</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">error_formatter=</span>(<span class="ruby-identifier">formatter</span>)&#x000A;  <span class="ruby-ivar">@stderr_logger</span>.<span class="ruby-identifier">formatter</span>=<span class="ruby-identifier">formatter</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+              <div class='method public-instance' id='method-method-i-error_level-3D'>
+                <a name='method-i-error_level-3D'></a>
+                <div class='synopsis'>
+                  <span class='name'>error_level=</span>
+                  <span class='arguments'>(level)</span>
+                </div>
+                <div class='description'>
+                  
+                  <p>Set the threshold for what messages go to the error device.  Note that
+                  calling #level= will <b>not</b> affect the error logger</p>
+                  <table class="rdoc-list"><tr><td class="rdoc-term"><p><tt>level</tt></p></td>
+                  <td>
+                  <p>a constant from Logger::Severity for the level of messages that should go
+                  to the error logger</p>
+                  </td></tr></table>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('method-i-error_level-3D-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='method-i-error_level-3D-source'><span class="ruby-comment"># File lib/methadone/cli_logger.rb, line 52</span>&#x000A;<span class="ruby-keyword">def</span> <span class="ruby-identifier">error_level=</span>(<span class="ruby-identifier">level</span>)&#x000A;  <span class="ruby-ivar">@stderr_logger</span>.<span class="ruby-identifier">level</span> = <span class="ruby-identifier">level</span>&#x000A;<span class="ruby-keyword">end</span></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id='footer-push'></div>
+    </div>
+    <div id='footer'>
+      <a target="docwin" href="http://github.com/mislav/hanna/tree/master"><strong>Hanna</strong> RDoc template</a>
+    </div>
+  </body>
+</html>
